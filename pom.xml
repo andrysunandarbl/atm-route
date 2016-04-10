@@ -12,6 +12,7 @@
         <module>atm-route-model</module>
         <module>atm-route-web</module>
         <module>atm-route-common</module>
+        <module>atm-route-core</module>
     </modules>
 
     <properties>

@@ -153,6 +153,13 @@
             <version>1.0</version>
         </dependency>
 
+        <!-- lib for shotest path problems solution-->
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
     </dependencies>
 
 
