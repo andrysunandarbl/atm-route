@@ -40,6 +40,15 @@ public class App {
 
     // load location data
     static void loadLocationdata() throws FileNotFoundException {
+        /*
+        The location will load 2 files :
+        1. LocationCode files
+           This file content is for location list
+        2. Distance matrix files
+            This file content is for list of distance for every location
+        */
+        
+        //change the path file to correct location !         
         scLoc = new Scanner(new FileReader("/home/andry/Documents/atm/LocationCode.txt"));
 
         boolean firstFlag = false;
@@ -58,6 +67,8 @@ public class App {
     }
 
     static void loadDistanceMatrix() throws FileNotFoundException {
+        
+        //change the path file to correct location !         
         scDistance = new Scanner(new FileReader("/home/andry/Documents/atm/atmDistance.txt"));
 
         // load data from file
