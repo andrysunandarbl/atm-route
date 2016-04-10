@@ -10,7 +10,7 @@
  *  Report bugs to <techsupport@innovez-one.com>.
  *  Copyright (C) 2015 PT. Innovez-One. All rights reserved.
  */
-package com.project.core;
+package com.project.atm.core;
 
 /**
  * Author andry on 28/12/15.

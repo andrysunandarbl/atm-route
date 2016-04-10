@@ -13,6 +13,7 @@
         <module>atm-route-web</module>
         <module>atm-route-common</module>
         <module>atm-route-core</module>
+        <module>atm-route-http</module>
     </modules>
 
     <properties>

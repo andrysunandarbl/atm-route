@@ -9,12 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>atm-route-model</artifactId>
+    <artifactId>atm-route-http</artifactId>
     
     <dependencies>
         <dependency>
             <groupId>com.project.atm</groupId>
-            <artifactId>atm-route-common</artifactId>
+            <artifactId>atm-route-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         

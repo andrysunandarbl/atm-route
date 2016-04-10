@@ -10,7 +10,7 @@
  *  Report bugs to <techsupport@innovez-one.com>.
  *  Copyright (C) 2015 PT. Innovez-One. All rights reserved.
  */
-package com.project.core;
+package com.project.atm.core;
 
 import org.apache.log4j.Logger;
 import org.jgrapht.alg.DijkstraShortestPath;
@@ -30,8 +30,8 @@ import java.util.Scanner;
 public class App {
     private static final Logger logger = Logger.getLogger(App.class);
 
-    private double[][] distance;
-    private Scanner scDistance;
+    private static double[][] distance;
+    private static Scanner scDistance;
     private static Scanner scLoc;
     private static List<Location> locationList = new ArrayList<Location>();
 
@@ -54,13 +54,43 @@ public class App {
             String[] locArr = scLoc.nextLine().split("\t");
             locationList.add(new Location(Integer.valueOf(locArr[0]), locArr[1]));
         }
-
-        System.out.println("location list => "+locationList.toString());
-
+        //System.out.println("location list => "+locationList.toString());
     }
 
-    /*
-    private void generateGraphData(){
+    static void loadDistanceMatrix() throws FileNotFoundException {
+        scDistance = new Scanner(new FileReader("/home/andry/Documents/atm/atmDistance.txt"));
+
+        // load data from file
+        int i=1;
+        int j=1;
+        int total = locationList.size();
+
+        distance =  new double[total][total];
+
+        logger.info("loading distance matrix tab file.................");
+
+        StopWatch stopWatch = new StopWatch("Travel distance calculation");
+        stopWatch.start("load distance matrix file");
+
+        // convert matrix data to array
+        while (scDistance.hasNextLine()){
+
+            //logger.info("i => "+ i +", j => "+j);
+            distance[i-1][j-1] = scDistance.nextDouble();
+            if((j%total) == 0){
+                i++;
+                j=0;
+                if(i==total+1)
+                    break;
+            }
+            j++;
+        }
+        stopWatch.stop();
+        logger.info(stopWatch.prettyPrint());
+        logger.info(stopWatch.prettyPrint());
+    }
+
+    private static void generateGraphData(){
         StopWatch stopWatch = new StopWatch("Generate Graph from data");
         stopWatch.start("run the shortest path algorithm");
         // generate graph
@@ -87,8 +117,7 @@ public class App {
         stopWatch.stop();
         logger.info(stopWatch.prettyPrint());
     }
-    */
-
+    
     public static double getWeightValue(String fromLoc, String toLoc){
         return graph.getEdgeWeight(graph.getEdge(fromLoc,toLoc));
     }
@@ -102,8 +131,17 @@ public class App {
         }
         return "No Route Data";
     }
+
+    public static Location getLocationById(int locId){
+
+        return locationList.get(locId);
+    }
     
     public static void main(String[] args) throws FileNotFoundException {
         loadLocationdata();
+        loadDistanceMatrix();
+        generateGraphData();
+        System.out.println("graph => "+graph.toString());
+        System.out.println("route from 5253 -> 5186 : " + findRoute("5253", "5186"));
     }
 }

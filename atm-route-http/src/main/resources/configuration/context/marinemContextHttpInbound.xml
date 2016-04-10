@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+
+
+    <bean id="httpHandler" class="com.project.atm.http.handler.HttpHandler">
+        <property name="httpExecutor" ref="httpExecutor" />
+        <property name="processExecutor" ref="processExecutor" />
+    </bean>
+
+    <int:channel id="receiveChannel" />
+
+    <int-http:inbound-gateway request-channel="receiveChannel" 
+                              path="receiveRoute.sch"
+                              supported-methods="POST"
+                              request-payload-type="java.lang.String"
+                              />
+    
+    <int:service-activator input-channel="receiveChannel" ref="httpHandler" method="processRequest" />
+
+    <!-- Executor Thread -->
+    <bean id="httpExecutorThread" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="threadNamePrefix" value="httpExecutorThread-" />
+        <!--<property name="allowCoreThreadTimeOut" value="false" />-->
+    </bean>
+
+    <bean id="httpExecutor" class="com.marinem.http.util.HttpExecutor">
+        <constructor-arg ref="httpExecutorThread" />
+    </bean>
+
+
+    <bean id="processExecutorThread" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="threadNamePrefix" value="processExecutorThread-" />
+        <!--<property name="allowCoreThreadTimeOut" value="false" />-->
+    </bean>
+
+    <bean id="processExecutor" class="com.marinem.model.async.ProcessExecutor">
+         <constructor-arg ref="processExecutorThread" />
+    </bean>
+
+
+
+</beans>
